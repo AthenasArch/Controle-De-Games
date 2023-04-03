@@ -7,11 +7,6 @@
 #
 # [AthenasArch].
 # [Leonardo Hilgemberg Lopes].
-# [Nome do Colaborador 3]
-# [Nome do Colaborador 3]
-# [Nome do Colaborador 3]
-# [Nome do Colaborador 3]
-# [E assim por diante...]
 
 import pygame
 
@@ -43,6 +38,82 @@ class TextPrint:
     def unindent(self):
         # Diminui o valor de x para remover a indentação
         self.x -= 10
+
+
+def handle_analog_axes(joystick, text_print, screen):
+
+    # Obtém o número de eixos do joystick
+    axes = joystick.get_numaxes()
+    text_print.tprint(screen, f"Número de eixos: {axes}")
+    text_print.indent()
+
+    # Exibe o valor atual de cada eixo
+    for i in range(axes):
+        axis = joystick.get_axis(i)
+        text_print.tprint(screen, f"Eixo {i} valor: {axis:>6.3f}")
+    
+    text_print.unindent()
+
+
+def draw_analog_stick(joystick, axis_x, axis_y, x, y, width, height, screen):
+    # Converte os valores analógicos para coordenadas no plano cartesiano
+    xpos = int((joystick.get_axis(axis_x) + 1) * width / 2 + x)
+    ypos = int((-joystick.get_axis(axis_y) + 1) * height / 2 + y)
+
+    # Desenha o plano cartesiano como um retângulo
+    pygame.draw.rect(screen, (0, 0, 0), (x, y, width, height), 2)
+
+    # Desenha uma linha do centro do plano até a posição da bolinha
+    center_x = x + width // 2
+    center_y = y + height // 2
+    pygame.draw.line(screen, (0, 0, 255), (center_x, center_y), (xpos, ypos), 2)
+
+    # Desenha a bolinha na posição atual
+    pygame.draw.circle(screen, (255, 0, 0), (xpos, ypos), 10)
+
+def handle_buttons(joystick, text_print, screen):
+
+    # Obtém o número de botões do joystick
+    buttons = joystick.get_numbuttons()
+    text_print.tprint(screen, f"Número de botões: {buttons}")
+
+    # Exibe o estado de cada botão
+    for i in range(buttons):
+        button = joystick.get_button(i)
+        text_print.tprint(screen, f"Botão {i:>2} valor: {button}")
+    text_print.unindent()
+
+def draw_checkboxes(joystick, x, y, width, height, screen):
+    # Obtém o número de botões do joystick
+    buttons = joystick.get_numbuttons()
+
+    # Desenha as checkboxes e atualiza o estado de acordo com o valor do botão
+    for i in range(buttons):
+        button_value = joystick.get_button(i)
+        draw_checkbox(button_value, x + i * 30, y, width, height, screen)
+
+def draw_checkbox(button_value, x, y, width, height, screen):
+    # Desenha o retângulo da checkbox
+    pygame.draw.rect(screen, (0, 0, 0), (x, y, width, height), 2)
+
+    # Se o botão estiver pressionado, desenha um retângulo preenchido dentro da checkbox
+    if button_value:
+        pygame.draw.rect(screen, (0, 0, 0), (x + 4, y + 4, width - 8, height - 8))
+
+
+
+def handle_hats(joystick, text_print, screen):
+
+    # Obtém o número de chapeus (hat) do joystick
+    hats = joystick.get_numhats()
+    text_print.tprint(screen, f"Número de chapeus: {hats}")
+    text_print.indent()
+
+    # Exibe a posição atual de cada chapéu
+    for i in range(hats):
+        hat = joystick.get_hat(i)
+        text_print.tprint(screen, f"Chapéu {i} valor: {str(hat)}")
+    text_print.unindent()
 
 def main():
     # Configura o tamanho da tela (largura, altura) e o nome da janela
@@ -123,39 +194,24 @@ def main():
             power_level = joystick.get_power_level()
             text_print.tprint(screen, f"Nível de energia do joystick: {power_level}")
 
-            # Obtém o número de eixos do joystick
-            axes = joystick.get_numaxes()
-            text_print.tprint(screen, f"Número de eixos: {axes}")
-            text_print.indent()
+            # Desenha as checkboxes na posição (50, 300) com tamanho 20x20
+            draw_checkboxes(joystick, 50, 300, 20, 20, screen)
 
-            # Exibe o valor atual de cada eixo
-            for i in range(axes):
-                axis = joystick.get_axis(i)
-                text_print.tprint(screen, f"Eixo {i} valor: {axis:>6.3f}")
-            text_print.unindent()
+            # vamos desenhar aqui, em algum ponto da tela a parte do plano cartesiano que recebe as informacoes 
+            # dos eixos dos controles.
+            # draw_analog_stick(joystick, eixo_x, eixo_y, x, y, largura, altura, tela)
+            draw_analog_stick(joystick, 0, 1, 50, 50, 140, 140, screen)  # Analógico esquerdo
+            draw_analog_stick(joystick, 2, 3, 300, 50, 140, 140, screen)  # Analógico direito
 
-            # Obtém o número de botões do joystick
-            buttons = joystick.get_numbuttons()
-            text_print.tprint(screen, f"Número de botões: {buttons}")
-
-            # Exibe o estado de cada botão
-            for i in range(buttons):
-                button = joystick.get_button(i)
-                text_print.tprint(screen, f"Botão {i:>2} valor: {button}")
-            text_print.unindent()
-
-            # Obtém o número de chapeus (hat) do joystick
-            hats = joystick.get_numhats()
-            text_print.tprint(screen, f"Número de chapeus: {hats}")
-            text_print.indent()
-
-            # Exibe a posição atual de cada chapéu
-            for i in range(hats):
-                hat = joystick.get_hat(i)
-                text_print.tprint(screen, f"Chapéu {i} valor: {str(hat)}")
-            text_print.unindent()
+            # *******************************************
+            # *******************************************
+            # *******************************************
+            handle_analog_axes(joystick, text_print, screen)
+            handle_buttons(joystick, text_print, screen)
+            handle_hats(joystick, text_print, screen)
 
             text_print.unindent()
+
 
         # Atualiza a tela com o que foi desenhado
         pygame.display.flip()
