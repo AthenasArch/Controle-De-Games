@@ -1,11 +1,13 @@
-# Nome projeto: Controle-De-Games
-# Data: [08/03/2023]
-# Projeto Iniciado: [23/02/2023]
-# Desenvolvido por:
-# [AthenasArch]
-# [Leonardo Hilgemberg Lopes]
-# [Nome do Colaborador 3]
-# [E assim por diante...]
+### :wolf: Olá, sou o Leonardo Hilgemberg, criador da AthenasArch.
 
+# Controle-De-Games
+- O projeto consiste em um software Python com Pygame para avaliar a qualidade de joysticks através de gráficos e caixas interativas, permitindo a verificação do bom funcionamento do controle e exibindo dados relevantes.
 
-Esta biblioteca te ajuda a pegar as informações de um Joystick como o controle do Xbox 360, controles paralelos do PS2 e PS4, entre outros
+#
+
+# Controles testados:
+- PS2 paralelo - OK.
+- Volante com Arduino - OK.
+- PS2 com Arduino - OK. 
+- Xbox 360 - OK.
+- PS4 - OK.

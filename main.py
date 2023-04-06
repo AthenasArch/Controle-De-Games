@@ -229,7 +229,7 @@ def handle_triggers(joystick, text_print, screen, invert_y=False):
     text_print.tprint(screen, f"Gatilhos:")
     # Exibe os valores dos gatilhos na tela
     text_print.tprint(screen, f"  Esquerdo: {trigger_left:>6.3f}")
-    text_print.tprint(screen, f"  Direito: {trigger_right:>6.3f}")
+    text_print.tprint(screen, f"  Direito......: {trigger_right:>6.3f}")
 
     trigger_x = 550  # Coordenada X dos velocímetros na tela
     trigger_y = 300  # Coordenada Y dos velocímetros na tela
@@ -277,6 +277,7 @@ def draw_checkbox(button_value, x, y, width, height, screen):
 def handle_digitalDirectionals(joystick, text_print, screen):
 
     # Obtém o número de Direcionais (direcional) do joystick
+    text_print.tprint(screen, f"")
     directionals = joystick.get_numhats()
     text_print.tprint(screen, f"Número de Direcionais digitais: {directionals}")
     text_print.indent()
@@ -311,8 +312,8 @@ def draw_ui(screen, logo):
     screen.fill((0, 0, 0))
 
     # Desenha a logo e as cordenadas dela
-    logo_x = 10
-    logo_y = 550 
+    logo_x = 350
+    logo_y = 600 
     screen.blit(logo, (logo_x, logo_y))
 
     # Desenha a caixa na lateral esquerda
